@@ -1,0 +1,32 @@
+name: Validate Part 1
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check docs folder
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "Error: docs folder is missing."
+            exit 1
+          fi
+          echo "docs folder found."
+
+      - name: Check required Part 1 files
+        run: |
+          test -f "docs/RaceDay_Database.sql"
+          test -f "docs/RaceDay_API_Endpoint_Plan.md"
+          test -f "docs/RaceDay_ERD.pdf"
+          echo "All required Part 1 files are present."
