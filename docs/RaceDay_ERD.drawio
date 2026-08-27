@@ -1,0 +1,54 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="0">
+    <mxGraphModel dx="864" dy="809" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=22;" value="&lt;b&gt;RaceDay - Entity Relationship Diagram (ERD)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="420" x="270" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=10;spacingLeft=10;fontSize=14;strokeWidth=1.5;" value="&lt;b&gt;USER&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;PK&lt;/b&gt; UserID&lt;br/&gt;FirstName&lt;br/&gt;LastName&lt;br/&gt;Email&lt;br/&gt;PasswordHash&lt;br/&gt;Role&lt;br/&gt;PhoneNumber&lt;br/&gt;" vertex="1">
+          <mxGeometry height="210" width="210" x="40" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="event" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=10;spacingLeft=10;fontSize=14;strokeWidth=1.5;" value="&lt;b&gt;EVENT&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;PK&lt;/b&gt; EventID&lt;br/&gt;&lt;b&gt;FK&lt;/b&gt; OrganiserID&lt;br/&gt;&lt;b&gt;FK&lt;/b&gt; EventTypeID&lt;br/&gt;EventName&lt;br/&gt;Description&lt;br/&gt;EventDate&lt;br/&gt;Location&lt;br/&gt;Distance&lt;br/&gt;" vertex="1">
+          <mxGeometry height="230" width="230" x="350" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="eventtype" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=10;spacingLeft=10;fontSize=14;strokeWidth=1.5;" value="&lt;b&gt;EVENTTYPE&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;PK&lt;/b&gt; EventTypeID&lt;br/&gt;TypeName&lt;br/&gt;" vertex="1">
+          <mxGeometry height="110" width="210" x="690" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="category" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=10;spacingLeft=10;fontSize=14;strokeWidth=1.5;" value="&lt;b&gt;CATEGORY&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;PK&lt;/b&gt; CategoryID&lt;br/&gt;&lt;b&gt;FK&lt;/b&gt; EventID&lt;br/&gt;CategoryName&lt;br/&gt;Description&lt;br/&gt;" vertex="1">
+          <mxGeometry height="150" width="210" x="690" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="enrolment" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=10;spacingLeft=10;fontSize=14;strokeWidth=1.5;" value="&lt;b&gt;ENROLMENT&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;PK&lt;/b&gt; EnrolmentID&lt;br/&gt;&lt;b&gt;FK&lt;/b&gt; ParticipantID&lt;br/&gt;&lt;b&gt;FK&lt;/b&gt; EventID&lt;br/&gt;&lt;b&gt;FK&lt;/b&gt; CategoryID&lt;br/&gt;EnrolmentDate&lt;br/&gt;" vertex="1">
+          <mxGeometry height="170" width="230" x="350" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="result" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=10;spacingLeft=10;fontSize=14;strokeWidth=1.5;" value="&lt;b&gt;RESULT&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;PK&lt;/b&gt; ResultID&lt;br/&gt;&lt;b&gt;FK&lt;/b&gt; EnrolmentID&lt;br/&gt;FinishTime&lt;br/&gt;FinishingPosition&lt;br/&gt;" vertex="1">
+          <mxGeometry height="140" width="210" x="690" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="event" value="1   Organiser creates   many">
+          <mxGeometry relative="1" x="-0.0023" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="eventtype" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.2;entryDx=0;entryDy=0;" target="event" value="1   Event type   many">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.65;exitDx=0;exitDy=0;entryX=0;entryY=0.35;entryDx=0;entryDy=0;" target="category" value="1   Categories   many">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.55;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" target="enrolment" value="1   Participant enters   many">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.55;exitY=1;exitDx=0;exitDy=0;entryX=0.55;entryY=0;entryDx=0;entryDy=0;" target="enrolment" value="1   Enrolments   many">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="category" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.45;entryDx=0;entryDy=0;" target="enrolment" value="1   Selected category   many">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="enrolment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.72;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="result" value="1   Result   0..1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
