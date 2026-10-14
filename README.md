@@ -28,4 +28,4 @@ The GitHub Actions workflow validates that the required Part 1 files are present
 
 ## Video Presentation
 
-YouTube video link: To be added after recording.
+YouTube video link: https://youtu.be/cWrbEoW9MFA
