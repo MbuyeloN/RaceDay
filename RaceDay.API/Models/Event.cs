@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RaceDay.API.Models
 {
@@ -28,6 +29,7 @@ namespace RaceDay.API.Models
         [MaxLength(150)]
         public string Location { get; set; } = "";
 
+        [Column(TypeName = "decimal(10,2)")]
         public decimal? Distance { get; set; }
     }
 }
