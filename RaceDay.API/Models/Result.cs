@@ -11,8 +11,10 @@ namespace RaceDay.API.Models
         [Required]
         public int EnrolmentID { get; set; }
 
-        public TimeSpan? FinishTime { get; set; }
+        [Required]
+        public TimeSpan FinishTime { get; set; }
 
-        public int? Position { get; set; }
+        [Required]
+        public int FinishingPosition { get; set; }
     }
 }
