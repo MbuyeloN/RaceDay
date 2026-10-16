@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RaceDay.API.Data;
+using RaceDay.API.Models;
 
 namespace RaceDay.API.Controllers
 {
@@ -15,33 +16,19 @@ namespace RaceDay.API.Controllers
             _context = context;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        // GET: api/Users/profile
+        // View your own profile
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfile()
         {
-            var users = await _context.Users
-                .AsNoTracking()
-                .Select(u => new
-                {
-                    u.UserID,
-                    u.FirstName,
-                    u.LastName,
-                    u.Email,
-                    u.Role,
-                    u.PhoneNumber
-                })
-                .ToListAsync();
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
-            return Ok(users);
-        }
+            if (userId == null)
+                return Unauthorized("Please log in first.");
 
-        // GET: api/Users/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
-        {
             var user = await _context.Users
                 .AsNoTracking()
-                .Where(u => u.UserID == id)
+                .Where(u => u.UserID == userId.Value)
                 .Select(u => new
                 {
                     u.UserID,
@@ -54,11 +41,54 @@ namespace RaceDay.API.Controllers
                 .FirstOrDefaultAsync();
 
             if (user == null)
-            {
-                return NotFound();
-            }
+                return NotFound("User not found.");
 
             return Ok(user);
+        }
+
+        // PUT: api/Users/profile
+        // Update your own profile
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile(
+            [FromBody] UpdateProfileRequest request)
+        {
+            int? userId = HttpContext.Session.GetInt32("UserID");
+
+            if (userId == null)
+                return Unauthorized("Please log in first.");
+
+            var user = await _context.Users
+                .FindAsync(userId.Value);
+
+            if (user == null)
+                return NotFound("User not found.");
+
+            string email = request.Email.Trim();
+
+            bool emailExists = await _context.Users
+                .AnyAsync(u => u.Email == email &&
+                               u.UserID != userId.Value);
+
+            if (emailExists)
+                return Conflict("Email is already registered.");
+
+            user.FirstName = request.FirstName.Trim();
+            user.LastName = request.LastName.Trim();
+            user.Email = email;
+            user.PhoneNumber = request.PhoneNumber;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Message = "Profile updated successfully.",
+                user.UserID,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Role,
+                user.PhoneNumber
+            });
         }
     }
 }

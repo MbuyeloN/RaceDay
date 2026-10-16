@@ -17,6 +17,7 @@ namespace RaceDay.API.Controllers
         }
 
         // GET: api/Events
+        // Both roles can view events
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
@@ -30,17 +31,28 @@ namespace RaceDay.API.Controllers
             var raceEvent = await _context.Events.FindAsync(id);
 
             if (raceEvent == null)
-            {
                 return NotFound();
-            }
 
             return Ok(raceEvent);
         }
 
         // POST: api/Events
+        // Only Organisers can create events
         [HttpPost]
         public async Task<ActionResult<Event>> CreateEvent(Event raceEvent)
         {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            var role = HttpContext.Session.GetString("Role");
+
+            if (userId == null)
+                return Unauthorized("Please log in first.");
+
+            if (role != "Organiser")
+                return StatusCode(403, "Only Organisers can create events.");
+
+            // Use the logged-in Organiser's ID
+            raceEvent.OrganiserID = userId.Value;
+
             _context.Events.Add(raceEvent);
             await _context.SaveChangesAsync();
 
@@ -52,22 +64,30 @@ namespace RaceDay.API.Controllers
         }
 
         // PUT: api/Events/4
+        // Only the event's Organiser can update it
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEvent(int id, Event raceEvent)
         {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            var role = HttpContext.Session.GetString("Role");
+
+            if (userId == null)
+                return Unauthorized("Please log in first.");
+
+            if (role != "Organiser")
+                return StatusCode(403, "Only Organisers can update events.");
+
             if (id != raceEvent.EventID)
-            {
                 return BadRequest("Event ID does not match.");
-            }
 
             var existingEvent = await _context.Events.FindAsync(id);
 
             if (existingEvent == null)
-            {
                 return NotFound();
-            }
 
-            existingEvent.OrganiserID = raceEvent.OrganiserID;
+            if (existingEvent.OrganiserID != userId.Value)
+                return StatusCode(403, "You can only update your own events.");
+
             existingEvent.EventTypeID = raceEvent.EventTypeID;
             existingEvent.EventName = raceEvent.EventName;
             existingEvent.Description = raceEvent.Description;
@@ -81,15 +101,26 @@ namespace RaceDay.API.Controllers
         }
 
         // DELETE: api/Events/4
+        // Only the event's Organiser can delete it
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent(int id)
         {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            var role = HttpContext.Session.GetString("Role");
+
+            if (userId == null)
+                return Unauthorized("Please log in first.");
+
+            if (role != "Organiser")
+                return StatusCode(403, "Only Organisers can delete events.");
+
             var raceEvent = await _context.Events.FindAsync(id);
 
             if (raceEvent == null)
-            {
                 return NotFound();
-            }
+
+            if (raceEvent.OrganiserID != userId.Value)
+                return StatusCode(403, "You can only delete your own events.");
 
             _context.Events.Remove(raceEvent);
             await _context.SaveChangesAsync();

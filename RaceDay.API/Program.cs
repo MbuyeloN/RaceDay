@@ -17,6 +17,18 @@ builder.Services.AddDbContext<RaceDayDbContext>(options =>
     )
 );
 
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -27,6 +39,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Enable session management
+app.UseSession();
 
 app.UseAuthorization();
 
