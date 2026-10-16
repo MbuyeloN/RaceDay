@@ -18,6 +18,7 @@ namespace RaceDay.API.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Event>().ToTable("Event");
+            modelBuilder.Entity<Category>().ToTable("Category");
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Enrolment> Enrolments { get; set; }
