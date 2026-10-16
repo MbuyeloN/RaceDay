@@ -71,4 +71,4 @@ GitHub Actions automatically builds the project and runs the unit tests to check
 
 ### Part 2 Video Presentation
 
-YouTube video link: To be added after recording.
+YouTube video link: https://youtu.be/QcLGusuWkx8
