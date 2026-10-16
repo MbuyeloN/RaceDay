@@ -9,16 +9,15 @@ namespace RaceDay.API.Models
         public int EnrolmentID { get; set; }
 
         [Required]
-        public int UserID { get; set; }
+        public int ParticipantID { get; set; }
+
+        [Required]
+        public int EventID { get; set; }
 
         [Required]
         public int CategoryID { get; set; }
 
         [Required]
         public DateTime EnrolmentDate { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public string Status { get; set; } = "";
     }
 }
