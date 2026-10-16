@@ -67,6 +67,8 @@ To run the tests, open Test Explorer in Visual Studio and select **Run All Tests
 
 GitHub Actions automatically builds the project and runs the unit tests to check that the API works correctly.
 
+![Successful Part 2 GitHub Actions workflow](docs/Part2Workflow.png)
+
 ### Part 2 Video Presentation
 
 YouTube video link: To be added after recording.
