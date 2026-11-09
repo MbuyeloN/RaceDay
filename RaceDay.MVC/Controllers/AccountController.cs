@@ -56,10 +56,13 @@ namespace RaceDay.MVC.Controllers
                     ViewBag.Error = response.StatusCode == HttpStatusCode.Conflict
                         ? "This email address is already registered."
                         : "Registration failed. Please check your details.";
+
                     return View();
                 }
 
-                TempData["Success"] = "Registration successful. Please log in.";
+                TempData["Success"] =
+                    "Registration successful. Please log in.";
+
                 return RedirectToAction(nameof(Login));
             }
             catch (HttpRequestException)
@@ -77,7 +80,8 @@ namespace RaceDay.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(
+            string email, string password)
         {
             if (string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(password))
@@ -90,9 +94,13 @@ namespace RaceDay.MVC.Controllers
             {
                 var client = _httpClientFactory.CreateClient("RaceDayApi");
 
-                var response = await client.PostAsJsonAsync(
+                using var response = await client.PostAsJsonAsync(
                     "api/Auth/login",
-                    new { Email = email, Password = password });
+                    new
+                    {
+                        Email = email,
+                        Password = password
+                    });
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -100,18 +108,49 @@ namespace RaceDay.MVC.Controllers
                     return View();
                 }
 
-                var user = await response.Content.ReadFromJsonAsync<LoginResponse>();
+                var user = await response.Content
+                    .ReadFromJsonAsync<LoginResponse>();
 
                 if (user == null ||
-                    (user.Role != "Organiser" && user.Role != "Participant"))
+                    (user.Role != "Organiser" &&
+                     user.Role != "Participant"))
                 {
                     ViewBag.Error = "Unable to complete login.";
                     return View();
                 }
 
+                // Retrieve the session cookie created by the API.
+                string? apiSessionCookie = null;
+
+                if (response.Headers.TryGetValues(
+                    "Set-Cookie", out var cookies))
+                {
+                    apiSessionCookie = cookies
+                        .Select(cookie => cookie.Split(';')[0].Trim())
+                        .FirstOrDefault(cookie =>
+                            cookie.StartsWith(
+                                ".AspNetCore.Session=",
+                                StringComparison.Ordinal));
+                }
+
+                if (string.IsNullOrWhiteSpace(apiSessionCookie))
+                {
+                    ViewBag.Error =
+                        "Unable to establish an API session.";
+                    return View();
+                }
+
+                // Save MVC login details and the API session.
                 HttpContext.Session.Clear();
-                HttpContext.Session.SetInt32("UserID", user.UserID);
-                HttpContext.Session.SetString("Role", user.Role);
+
+                HttpContext.Session.SetInt32(
+                    "UserID", user.UserID);
+
+                HttpContext.Session.SetString(
+                    "Role", user.Role);
+
+                HttpContext.Session.SetString(
+                    "ApiSessionCookie", apiSessionCookie);
 
                 return user.Role == "Organiser"
                     ? RedirectToAction("Index", "Organiser")
@@ -129,12 +168,14 @@ namespace RaceDay.MVC.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
+
             return RedirectToAction("Login", "Account");
         }
 
         private class LoginResponse
         {
             public int UserID { get; set; }
+
             public string Role { get; set; } = "";
         }
     }

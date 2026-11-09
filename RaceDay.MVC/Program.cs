@@ -10,6 +10,11 @@ builder.Services.AddHttpClient("RaceDayApi", client =>
         builder.Configuration["RaceDayApi:BaseUrl"]
         ?? throw new InvalidOperationException(
             "RaceDay API URL is missing."));
+})
+.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    // Prevent API cookies from being shared between users
+    UseCookies = false
 });
 
 // Enable session management

@@ -91,10 +91,12 @@
         <div class="col-md-4">
             <div class="participant-card">
                 <h3>Discover Events</h3>
+
                 <p class="mt-3">
                     Explore upcoming running, walking,
                     and cycling events.
                 </p>
+
                 <a asp-controller="Participant"
                    asp-action="Events"
                    class="participant-button">
@@ -106,23 +108,29 @@
         <div class="col-md-4">
             <div class="participant-card">
                 <h3>My Registrations</h3>
+
                 <p class="mt-3">
                     Keep track of the events you have
                     registered for.
                 </p>
-                <span class="participant-button">
+
+                <a asp-controller="Participant"
+                   asp-action="Registrations"
+                   class="participant-button">
                     My Registrations
-                </span>
+                </a>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="participant-card">
                 <h3>My Results</h3>
+
                 <p class="mt-3">
                     View your race results and celebrate
                     your sporting achievements.
                 </p>
+
                 <span class="participant-button">
                     View Results
                 </span>
