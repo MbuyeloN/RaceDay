@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "Organiser Dashboard";
+}
+
+<style>
+    .organiser-hero {
+        background: linear-gradient(125deg, #10294c, #245780);
+        border-radius: 24px;
+        padding: 48px;
+        color: white;
+        margin-bottom: 30px;
+    }
+
+        .organiser-hero h1 {
+            font-weight: 800;
+            font-size: 2.5rem;
+        }
+
+    .organiser-highlight {
+        color: #c6f36b;
+    }
+
+    .organiser-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 12px 30px rgba(23, 59, 117, 0.10);
+        height: 100%;
+    }
+
+        .organiser-card h3 {
+            color: #173b75;
+            font-weight: 750;
+            font-size: 1.3rem;
+        }
+
+        .organiser-card p {
+            color: #68788d;
+        }
+
+    .organiser-button {
+        display: inline-block;
+        background: #c6f36b;
+        color: #173b75;
+        padding: 12px 24px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+        .organiser-button:hover {
+            background: #b1e653;
+            color: #173b75;
+        }
+
+    @@media (max-width: 768px) {
+        .organiser-hero {
+            padding: 28px;
+        }
+
+            .organiser-hero h1 {
+                font-size: 1.9rem;
+            }
+    }
+</style>
+
+<div class="container py-4">
+
+    <section class="organiser-hero">
+        <p class="fw-bold organiser-highlight">
+            WELCOME TO RACEDAY
+        </p>
+
+        <h1>
+            Organise.
+            <span class="organiser-highlight">
+                Inspire. Achieve.
+            </span>
+        </h1>
+
+        <p class="mt-3 mb-0">
+            Manage sporting events, monitor participant
+            registrations, and record race results.
+        </p>
+    </section>
+
+    <h2 class="fw-bold mb-4" style="color:#173b75;">
+        Organiser Dashboard
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="organiser-card">
+                <h3>Manage Events</h3>
+
+                <p class="mt-3">
+                    Create and manage your sporting events,
+                    including running, walking and cycling.
+                </p>
+
+                <a asp-controller="Organiser"
+                   asp-action="Events"
+                   class="organiser-button">
+                    Manage Events
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="organiser-card">
+                <h3>View Registrations</h3>
+
+                <p class="mt-3">
+                    View participants who have registered
+                    for your sporting events.
+                </p>
+
+                <span class="organiser-button">
+                    View Registrations
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="organiser-card">
+                <h3>Manage Results</h3>
+
+                <p class="mt-3">
+                    Record finishing times and positions
+                    for participants in your events.
+                </p>
+
+                <span class="organiser-button">
+                    Manage Results
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>

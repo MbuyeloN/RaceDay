@@ -17,8 +17,6 @@ namespace RaceDay.API.Controllers
         }
 
         // GET: api/Enrolments
-        // Organisers can view enrolments for their events.
-        // Participants can view only their own enrolments.
         [HttpGet]
         public async Task<IActionResult> GetEnrolments()
         {
@@ -87,7 +85,6 @@ namespace RaceDay.API.Controllers
         }
 
         // POST: api/Enrolments
-        // Only Participants can register themselves.
         [HttpPost]
         public async Task<IActionResult> CreateEnrolment(
             Enrolment enrolment)
@@ -102,17 +99,14 @@ namespace RaceDay.API.Controllers
                 return StatusCode(403,
                     "Only Participants can enrol in events.");
 
-            // Always use the logged-in participant's ID.
             enrolment.ParticipantID = userId.Value;
 
-            // Check whether the event exists.
             bool eventExists = await _context.Events
                 .AnyAsync(e => e.EventID == enrolment.EventID);
 
             if (!eventExists)
                 return BadRequest("The selected event does not exist.");
 
-            // Check that the category belongs to this event.
             bool validCategory = await _context.Categories
                 .AnyAsync(c =>
                     c.CategoryID == enrolment.CategoryID &&
@@ -122,7 +116,6 @@ namespace RaceDay.API.Controllers
                 return BadRequest(
                     "The selected category does not belong to this event.");
 
-            // Prevent registering for the same event twice.
             bool alreadyEnrolled = await _context.Enrolments
                 .AnyAsync(e =>
                     e.ParticipantID == userId.Value &&
@@ -132,7 +125,6 @@ namespace RaceDay.API.Controllers
                 return Conflict(
                     "You are already enrolled in this event.");
 
-            // Let the database generate the enrolment ID.
             enrolment.EnrolmentID = 0;
             enrolment.EnrolmentDate = DateTime.Now;
 
@@ -142,12 +134,10 @@ namespace RaceDay.API.Controllers
             return CreatedAtAction(
                 nameof(GetEnrolment),
                 new { id = enrolment.EnrolmentID },
-                enrolment
-            );
+                enrolment);
         }
 
         // PUT: api/Enrolments/1
-        // Participants may change their selected category.
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEnrolment(
             int id, Enrolment enrolment)
@@ -192,7 +182,6 @@ namespace RaceDay.API.Controllers
         }
 
         // DELETE: api/Enrolments/1
-        // Participants can cancel only their own enrolments.
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEnrolment(int id)
         {
@@ -219,6 +208,47 @@ namespace RaceDay.API.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Enrolments/organiser-registrations
+        [HttpGet("organiser-registrations")]
+        public async Task<IActionResult> GetOrganiserRegistrations()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            string? role = HttpContext.Session.GetString("Role");
+
+            if (userId == null)
+                return Unauthorized("Please log in first.");
+
+            if (role != "Organiser")
+                return StatusCode(403,
+                    "Only organisers can view these registrations.");
+
+            var registrations = await (
+                from enrolment in _context.Enrolments
+                join raceEvent in _context.Events
+                    on enrolment.EventID equals raceEvent.EventID
+                join participant in _context.Users
+                    on enrolment.ParticipantID equals participant.UserID
+                join category in _context.Categories
+                    on enrolment.CategoryID equals category.CategoryID
+                where raceEvent.OrganiserID == userId.Value
+                orderby enrolment.EnrolmentDate descending
+                select new
+                {
+                    enrolment.EnrolmentID,
+                    enrolment.ParticipantID,
+                    enrolment.EventID,
+                    enrolment.CategoryID,
+                    enrolment.EnrolmentDate,
+                    raceEvent.EventName,
+                    ParticipantName =
+                        participant.FirstName + " " + participant.LastName,
+                    CategoryName = category.CategoryName
+                }
+            ).AsNoTracking().ToListAsync();
+
+            return Ok(registrations);
         }
     }
 }

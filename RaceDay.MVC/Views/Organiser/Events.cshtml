@@ -1,0 +1,197 @@
+﻿@model List<RaceDay.MVC.Models.ManageEventViewModel>
+
+@{
+    ViewData["Title"] = "Manage Events";
+}
+
+<style>
+    .manage-hero {
+        background: linear-gradient(125deg, #10294c, #245780);
+        color: white;
+        border-radius: 24px;
+        padding: 45px;
+        margin-bottom: 30px;
+    }
+
+        .manage-hero h1 {
+            font-weight: 800;
+        }
+
+    .manage-highlight {
+        color: #c6f36b;
+    }
+
+    .manage-card {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(23,59,117,0.08);
+        height: 100%;
+    }
+
+        .manage-card h4 {
+            color: #173b75;
+            font-weight: 800;
+        }
+
+    .manage-button {
+        display: inline-block;
+        background: #c6f36b;
+        color: #173b75;
+        padding: 11px 20px;
+        border-radius: 12px;
+        border: none;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+        .manage-button:hover {
+            background: #b1e653;
+            color: #173b75;
+        }
+
+    .edit-button {
+        background: #173b75;
+        color: white;
+    }
+
+        .edit-button:hover {
+            background: #245780;
+            color: white;
+        }
+</style>
+
+<div class="container py-4">
+
+    <section class="manage-hero">
+        <p class="fw-bold manage-highlight">
+            ORGANISER EVENT MANAGEMENT
+        </p>
+
+        <h1>
+            Manage <span class="manage-highlight">Events</span>
+        </h1>
+
+        <p class="mb-0">
+            Create, update and manage your sporting events.
+        </p>
+    </section>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color:#173b75;">
+            My Events
+        </h2>
+
+        <a asp-controller="Organiser"
+           asp-action="CreateEvent"
+           class="manage-button">
+            + Create Event
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+    else if (Model == null || Model.Count == 0)
+    {
+        <div class="manage-card">
+            <p class="mb-0">
+                You have not created any events yet.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var raceEvent in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="manage-card">
+
+                        <h4>@raceEvent.EventName</h4>
+
+                        <p>
+                            <strong>Date:</strong>
+                            @raceEvent.EventDate.ToString("dd MMM yyyy")
+                        </p>
+
+                        <p>
+                            <strong>Location:</strong>
+                            @raceEvent.Location
+                        </p>
+
+                        <p>
+                            <strong>Event Type ID:</strong>
+                            @raceEvent.EventTypeID
+                        </p>
+
+                        <p>
+                            <strong>Distance:</strong>
+                            @(raceEvent.Distance.HasValue
+                                ? $"{raceEvent.Distance.Value:0.##} km"
+                                : "Not specified")
+                        </p>
+
+                        @if (!string.IsNullOrWhiteSpace(raceEvent.Description))
+                        {
+                            <p>@raceEvent.Description</p>
+                        }
+
+                        <div class="d-flex gap-2 mt-3">
+
+                            <a asp-controller="Organiser"
+                               asp-action="EditEvent"
+                               asp-route-id="@raceEvent.EventID"
+                               class="manage-button edit-button">
+                                Edit
+                            </a>
+
+                            <form asp-controller="Organiser"
+                                  asp-action="DeleteEvent"
+                                  asp-route-id="@raceEvent.EventID"
+                                  method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this event?');">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Organiser"
+           asp-action="Index"
+           class="fw-bold"
+           style="color:#173b75;">
+            Back to Organiser Dashboard
+        </a>
+    </div>
+
+</div>
