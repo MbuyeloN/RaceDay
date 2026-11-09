@@ -1,0 +1,146 @@
+﻿@model List<RaceDay.MVC.Models.EventViewModel>
+
+@{
+    ViewData["Title"] = "Explore Events";
+}
+
+<style>
+    .events-header {
+        background: linear-gradient(120deg, #112b50, #2b6485);
+        color: white;
+        padding: 45px;
+        border-radius: 24px;
+        margin-bottom: 30px;
+    }
+
+        .events-header h1 {
+            font-weight: 800;
+        }
+
+    .events-highlight {
+        color: #c6f36b;
+    }
+
+    .events-card {
+        background: white;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 8px 25px rgba(23,59,117,0.08);
+    }
+
+    .event-item {
+        border: 1px solid #e3eaf2;
+        border-radius: 15px;
+        padding: 22px;
+        height: 100%;
+        background: #ffffff;
+    }
+
+    .event-name {
+        color: #173b75;
+        font-weight: 800;
+    }
+
+    .event-detail {
+        color: #68788d;
+        margin-bottom: 8px;
+    }
+
+    .events-back {
+        color: #173b75;
+        font-weight: 700;
+        text-decoration: none;
+    }
+</style>
+
+<div class="container py-4">
+
+    <section class="events-header">
+        <p class="fw-bold events-highlight">
+            DISCOVER YOUR NEXT CHALLENGE
+        </p>
+
+        <h1>
+            Explore <span class="events-highlight">Events</span>
+        </h1>
+
+        <p class="mb-0">
+            Find running, walking and cycling events
+            and take the next step in your RACEDAY journey.
+        </p>
+    </section>
+
+    <div class="events-card">
+
+        <h3 class="mb-4" style="color:#173b75;">
+            Available Events
+        </h3>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+            </div>
+        }
+        else if (Model == null || Model.Count == 0)
+        {
+            <p class="text-muted mb-0">
+                No sporting events are available at the moment.
+                Please check again later.
+            </p>
+        }
+        else
+        {
+            <div class="row g-4">
+
+                @foreach (var raceEvent in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="event-item">
+
+                            <h4 class="event-name">
+                                @raceEvent.EventName
+                            </h4>
+
+                            <p class="event-detail">
+                                <strong>Date:</strong>
+                                @raceEvent.EventDate.ToString("dd MMM yyyy")
+                            </p>
+
+                            <p class="event-detail">
+                                <strong>Location:</strong>
+                                @raceEvent.Location
+                            </p>
+
+                            <p class="event-detail">
+                                <strong>Distance:</strong>
+                                @(raceEvent.Distance.HasValue
+                                    ? $"{raceEvent.Distance.Value:0.##} km"
+                                    : "Not specified")
+                            </p>
+
+                            @if (!string.IsNullOrWhiteSpace(raceEvent.Description))
+                            {
+                                <p class="text-muted mb-0">
+                                    @raceEvent.Description
+                                </p>
+                            }
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Participant"
+           asp-action="Index"
+           class="events-back">
+            Back to My Dashboard
+        </a>
+    </div>
+
+</div>

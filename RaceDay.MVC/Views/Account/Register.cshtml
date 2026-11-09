@@ -1,0 +1,236 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+<style>
+    .register-card {
+        border-radius: 24px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 20px 55px rgba(23, 59, 117, 0.14);
+    }
+
+    .register-accent {
+        height: 7px;
+        background: linear-gradient(90deg, #173b75, #3685a0, #c6f36b);
+    }
+
+    .register-logo {
+        font-size: 2.3rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #173b75;
+    }
+
+        .register-logo span {
+            color: #85b900;
+        }
+
+    .register-title {
+        color: #173b75;
+        font-weight: 800;
+    }
+
+    .register-subtitle {
+        color: #68788d;
+    }
+
+    .register-label {
+        color: #173b75;
+        font-weight: 600;
+    }
+
+    .register-card .form-control,
+    .register-card .form-select {
+        border: 1px solid #d5e3f0;
+        border-radius: 12px;
+        padding: 12px 14px;
+    }
+
+        .register-card .form-control:focus,
+        .register-card .form-select:focus {
+            border-color: #85b900;
+            box-shadow: 0 0 0 3px rgba(198, 243, 107, 0.25);
+        }
+
+    .register-button {
+        background: #c6f36b;
+        color: #173b75;
+        border: none;
+        border-radius: 12px;
+        padding: 13px;
+        font-weight: 800;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+        .register-button:hover {
+            background: #b1e653;
+            color: #173b75;
+            transform: translateY(-2px);
+        }
+
+    .register-login-link {
+        color: #173b75;
+        font-weight: 700;
+    }
+
+        .register-login-link:hover {
+            color: #668f00;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7 col-xl-6">
+
+            <div class="card border-0 register-card">
+
+                <div class="register-accent"></div>
+
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+                        <div class="register-logo mb-2">
+                            RACE<span>DAY</span>
+                        </div>
+
+                        <h2 class="register-title">
+                            Join the Race!
+                        </h2>
+
+                        <p class="register-subtitle">
+                            Create your account and start your
+                            next sporting adventure.
+                        </p>
+                    </div>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <form asp-controller="Account"
+                          asp-action="Register"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName"
+                                       class="form-label register-label">
+                                    First Name
+                                </label>
+
+                                <input id="firstName"
+                                       name="firstName"
+                                       class="form-control"
+                                       autocomplete="given-name"
+                                       required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName"
+                                       class="form-label register-label">
+                                    Last Name
+                                </label>
+
+                                <input id="lastName"
+                                       name="lastName"
+                                       class="form-control"
+                                       autocomplete="family-name"
+                                       required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email"
+                                   class="form-label register-label">
+                                Email Address
+                            </label>
+
+                            <input type="email"
+                                   id="email"
+                                   name="email"
+                                   class="form-control"
+                                   autocomplete="email"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phoneNumber"
+                                   class="form-label register-label">
+                                Phone Number
+                            </label>
+
+                            <input type="tel"
+                                   id="phoneNumber"
+                                   name="phoneNumber"
+                                   class="form-control"
+                                   autocomplete="tel" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role"
+                                   class="form-label register-label">
+                                Register As
+                            </label>
+
+                            <select id="role"
+                                    name="role"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">
+                                    Select your role
+                                </option>
+
+                                <option value="Participant">
+                                    Participant
+                                </option>
+
+                                <option value="Organiser">
+                                    Organiser
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password"
+                                   class="form-label register-label">
+                                Password
+                            </label>
+
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   class="form-control"
+                                   autocomplete="new-password"
+                                   minlength="8"
+                                   required />
+                        </div>
+
+                        <button type="submit"
+                                class="btn w-100 register-button">
+                            Create My Account
+                        </button>
+
+                    </form>
+
+                    <p class="text-center mt-4 mb-0">
+                        Already part of RACEDAY?
+
+                        <a asp-controller="Account"
+                           asp-action="Login"
+                           class="register-login-link">
+                            Log In
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

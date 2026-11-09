@@ -1,8 +1,184 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .raceday-hero {
+        background: linear-gradient(125deg, #10294d, #204d7a 65%, #316c83);
+        color: white;
+        border-radius: 28px;
+        padding: 85px 55px;
+        margin: 35px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .raceday-hero::after {
+            content: "";
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            border: 45px solid rgba(198, 243, 107, 0.12);
+            border-radius: 50%;
+            right: -100px;
+            top: -90px;
+            pointer-events: none;
+        }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 680px;
+    }
+
+    .hero-label {
+        color: #c6f36b;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .hero-title {
+        font-size: clamp(2.4rem, 5vw, 4.3rem);
+        font-weight: 800;
+        line-height: 1.15;
+        margin: 25px 0;
+    }
+
+        .hero-title span {
+            color: #c6f36b;
+        }
+
+    .hero-description {
+        font-size: 1.15rem;
+        color: #e3edf8;
+        line-height: 1.8;
+        margin-bottom: 35px;
+    }
+
+    .hero-btn {
+        display: inline-block;
+        background: #c6f36b;
+        color: #173b75;
+        padding: 15px 30px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        margin: 0 10px 10px 0;
+        transition: 0.2s;
+    }
+
+        .hero-btn:hover {
+            background: #b1e653;
+            color: #173b75;
+            transform: translateY(-2px);
+        }
+
+    .hero-btn-outline {
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+    }
+
+        .hero-btn-outline:hover {
+            background: white;
+            color: #173b75;
+        }
+
+    .section-heading {
+        color: #173b75;
+        font-weight: 800;
+        text-align: center;
+        margin: 55px 0 30px;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px 25px;
+        height: 100%;
+        box-shadow: 0 12px 35px rgba(23, 59, 117, 0.09);
+        border-top: 5px solid #c6f36b;
+    }
+
+        .feature-card h4 {
+            color: #173b75;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #52647c;
+            line-height: 1.7;
+        }
+
+    @@media (max-width: 768px) {
+        .raceday-hero {
+            padding: 55px 25px;
+        }
+    }
+</style>
+
+<section class="raceday-hero">
+    <div class="hero-content">
+        <p class="hero-label">WELCOME TO RACEDAY</p>
+
+        <h1 class="hero-title">
+            Every Race Begins
+            <span>With a Goal.</span>
+        </h1>
+
+        <p class="hero-description">
+            Discover exciting sporting events, register for your
+            next race, and celebrate every achievement.
+            RACEDAY connects participants and organisers
+            in one simple platform.
+        </p>
+
+        <a asp-controller="Account"
+           asp-action="Register"
+           class="hero-btn">
+            Get Started
+        </a>
+
+        <a asp-controller="Account"
+           asp-action="Login"
+           class="hero-btn hero-btn-outline">
+            Log In
+        </a>
+    </div>
+</section>
+
+<h2 class="section-heading">Why Choose RACEDAY?</h2>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="feature-card">
+            <h4>Discover Events</h4>
+            <p>
+                Explore upcoming sporting events and
+                find races that match your interests.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="feature-card">
+            <h4>Easy Registration</h4>
+            <p>
+                Join events through a simple registration
+                process and manage your participation.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="feature-card">
+            <h4>Track Achievements</h4>
+            <p>
+                View race results and keep track of
+                your sporting journey.
+            </p>
+        </div>
+    </div>
 </div>

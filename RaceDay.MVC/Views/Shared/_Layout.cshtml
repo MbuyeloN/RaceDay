@@ -1,47 +1,160 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var role = Context.Session.GetString("Role");
+    var isLoggedIn = Context.Session.GetInt32("UserID") != null;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RaceDay.MVC</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - RACEDAY</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RaceDay.MVC.styles.css" asp-append-version="true" />
+
+    <style>
+            .raceday-navbar {
+                background: #173b75;
+                box-shadow: 0 4px 20px rgba(23, 59, 117, 0.18);
+            }
+
+            .raceday-brand {
+                font-size: 1.7rem;
+                font-weight: 800;
+                text-decoration: none;
+            }
+
+            .raceday-navbar .nav-link {
+                color: #ffffff;
+                font-weight: 500;
+                margin: 0 6px;
+            }
+
+                .raceday-navbar .nav-link:hover {
+                    color: #c6f36b;
+                }
+
+            .raceday-navbar .navbar-toggler {
+                border-color: rgba(255,255,255,0.5);
+            }
+
+            .raceday-navbar .navbar-toggler-icon {
+                filter: invert(1);
+            }
+
+            .raceday-register {
+                background: #c6f36b;
+                color: #173b75 !important;
+                border-radius: 20px;
+                padding: 8px 20px !important;
+                font-weight: 700 !important;
+            }
+
+                .raceday-register:hover {
+                    background: #b1e653;
+                    color: #173b75 !important;
+                }
+
+            .raceday-footer {
+                background: rgba(255,255,255,0.85);
+                padding: 18px 0;
+                margin-top: 40px;
+                text-align: center;
+                color: #173b75;
+            }
+    </style>
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RaceDay.MVC</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg raceday-navbar">
+            <div class="container">
+                <a class="navbar-brand raceday-brand"
+                   asp-controller="Home" asp-action="Index">
+                    <span style="color:white;">RACE</span><span style="color:#c6f36b;">DAY</span>
+                </a>
+
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#racedayNavigation"
+                        aria-controls="racedayNavigation"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="racedayNavigation">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                Home
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                        @if (!isLoggedIn)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    Login
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link raceday-register"
+                                   asp-controller="Account" asp-action="Register">
+                                    Join RACEDAY
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            @if (role == "Organiser")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Organiser" asp-action="Index">
+                                        Dashboard
+                                    </a>
+                                </li>
+                            }
+                            else if (role == "Participant")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Participant" asp-action="Index">
+                                        My Dashboard
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn raceday-register ms-lg-2">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+
+    <div class="container mt-4">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="raceday-footer">
         <div class="container">
-            &copy; 2026 - RaceDay.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            © 2026 RACEDAY | Run. Walk. Cycle. Achieve.
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

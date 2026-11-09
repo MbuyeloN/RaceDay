@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Participant Dashboard";
+}
+
+<style>
+    .participant-hero {
+        background: linear-gradient(125deg, #10294c, #245780);
+        border-radius: 24px;
+        padding: 48px;
+        color: white;
+        margin-bottom: 30px;
+    }
+
+        .participant-hero h1 {
+            font-weight: 800;
+            font-size: 2.5rem;
+        }
+
+    .participant-highlight {
+        color: #c6f36b;
+    }
+
+    .participant-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 12px 30px rgba(23, 59, 117, 0.10);
+        height: 100%;
+    }
+
+        .participant-card h3 {
+            color: #173b75;
+            font-weight: 750;
+            font-size: 1.3rem;
+        }
+
+        .participant-card p {
+            color: #68788d;
+        }
+
+    .participant-button {
+        display: inline-block;
+        background: #c6f36b;
+        color: #173b75;
+        padding: 12px 24px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+        .participant-button:hover {
+            background: #b1e653;
+            color: #173b75;
+        }
+
+    @@media (max-width: 768px) {
+        .participant-hero {
+            padding: 28px;
+        }
+
+            .participant-hero h1 {
+                font-size: 1.9rem;
+            }
+    }
+</style>
+
+<div class="container py-4">
+
+    <section class="participant-hero">
+        <p class="fw-bold participant-highlight">
+            WELCOME TO RACEDAY
+        </p>
+
+        <h1>
+            Your Race.
+            <span class="participant-highlight">Your Journey.</span>
+        </h1>
+
+        <p class="mt-3 mb-0">
+            Discover sporting events, join exciting races,
+            and keep track of your achievements.
+        </p>
+    </section>
+
+    <h2 class="fw-bold mb-4" style="color:#173b75;">
+        My Dashboard
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="participant-card">
+                <h3>Discover Events</h3>
+                <p class="mt-3">
+                    Explore upcoming running, walking,
+                    and cycling events.
+                </p>
+                <a asp-controller="Participant"
+                   asp-action="Events"
+                   class="participant-button">
+                    Explore Events
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="participant-card">
+                <h3>My Registrations</h3>
+                <p class="mt-3">
+                    Keep track of the events you have
+                    registered for.
+                </p>
+                <span class="participant-button">
+                    My Registrations
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="participant-card">
+                <h3>My Results</h3>
+                <p class="mt-3">
+                    View your race results and celebrate
+                    your sporting achievements.
+                </p>
+                <span class="participant-button">
+                    View Results
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>
