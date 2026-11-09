@@ -1,7 +1,12 @@
 ﻿@model List<RaceDay.MVC.Models.EventViewModel>
+@using RaceDay.MVC.Models
+@using System.Linq
 
 @{
     ViewData["Title"] = "Explore Events";
+
+    var categories = ViewBag.Categories as List<CategoryViewModel>
+        ?? new List<CategoryViewModel>();
 }
 
 <style>
@@ -34,6 +39,8 @@
         padding: 22px;
         height: 100%;
         background: #ffffff;
+        display: flex;
+        flex-direction: column;
     }
 
     .event-name {
@@ -51,11 +58,38 @@
         font-weight: 700;
         text-decoration: none;
     }
+
+    .register-button {
+        background: #c6f36b;
+        color: #173b75;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-weight: 700;
+        width: 100%;
+        cursor: pointer;
+    }
+
+        .register-button:hover {
+            background: #b1e653;
+        }
+
+        .register-button:disabled {
+            background: #d8dfe7;
+            color: #68788d;
+            cursor: not-allowed;
+        }
+
+    .register-section {
+        margin-top: auto;
+        padding-top: 20px;
+    }
 </style>
 
 <div class="container py-4">
 
     <section class="events-header">
+
         <p class="fw-bold events-highlight">
             DISCOVER YOUR NEXT CHALLENGE
         </p>
@@ -68,6 +102,7 @@
             Find running, walking and cycling events
             and take the next step in your RACEDAY journey.
         </p>
+
     </section>
 
     <div class="events-card">
@@ -75,6 +110,20 @@
         <h3 class="mb-4" style="color:#173b75;">
             Available Events
         </h3>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
 
         @if (ViewBag.Error != null)
         {
@@ -95,7 +144,12 @@
 
                 @foreach (var raceEvent in Model)
                 {
+                    var eventCategories = categories
+                        .Where(c => c.EventID == raceEvent.EventID)
+                        .ToList();
+
                     <div class="col-md-6 col-lg-4">
+
                         <div class="event-item">
 
                             <h4 class="event-name">
@@ -121,12 +175,72 @@
 
                             @if (!string.IsNullOrWhiteSpace(raceEvent.Description))
                             {
-                                <p class="text-muted mb-0">
+                                <p class="text-muted">
                                     @raceEvent.Description
                                 </p>
                             }
 
+                            <div class="register-section">
+
+                                @if (eventCategories.Count > 0)
+                                {
+                                    <form asp-controller="Participant"
+                                          asp-action="RegisterForEvent"
+                                          method="post">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="eventId"
+                                               value="@raceEvent.EventID" />
+
+                                        <label class="form-label fw-bold"
+                                               for="category-@raceEvent.EventID">
+                                            Select Category
+                                        </label>
+
+                                        <select id="category-@raceEvent.EventID"
+                                                name="categoryId"
+                                                class="form-select mb-3"
+                                                required>
+
+                                            <option value="">
+                                                Choose a category
+                                            </option>
+
+                                            @foreach (var category in eventCategories)
+                                            {
+                                                <option value="@category.CategoryID">
+                                                    @category.CategoryName
+                                                </option>
+                                            }
+
+                                        </select>
+
+                                        <button type="submit"
+                                                class="register-button">
+                                            Register for Event
+                                        </button>
+
+                                    </form>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">
+                                        No registration categories are
+                                        available for this event.
+                                    </p>
+
+                                    <button class="register-button"
+                                            disabled>
+                                        Registration Unavailable
+                                    </button>
+                                }
+
+                            </div>
+
                         </div>
+
                     </div>
                 }
 

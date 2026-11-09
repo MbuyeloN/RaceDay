@@ -1,0 +1,125 @@
+﻿@model List<RaceDay.MVC.Models.ResultViewModel>
+
+@{
+    ViewData["Title"] = "My Results";
+}
+
+<style>
+    .results-hero {
+        background: linear-gradient(125deg, #10294c, #245780);
+        color: white;
+        padding: 45px;
+        border-radius: 24px;
+        margin-bottom: 30px;
+    }
+
+        .results-hero h1 {
+            font-weight: 800;
+        }
+
+    .results-highlight {
+        color: #c6f36b;
+    }
+
+    .results-card {
+        background: white;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 10px 25px rgba(23,59,117,0.08);
+        height: 100%;
+    }
+
+        .results-card h4 {
+            color: #173b75;
+            font-weight: 800;
+        }
+
+    .results-detail {
+        color: #68788d;
+        margin-bottom: 12px;
+    }
+
+    .results-back {
+        color: #173b75;
+        font-weight: 700;
+        text-decoration: none;
+    }
+</style>
+
+<div class="container py-4">
+
+    <section class="results-hero">
+        <p class="fw-bold results-highlight">
+            CELEBRATE YOUR ACHIEVEMENTS
+        </p>
+
+        <h1>
+            My <span class="results-highlight">Results</span>
+        </h1>
+
+        <p class="mb-0">
+            View your race results and track your progress.
+        </p>
+    </section>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+    else if (Model == null || Model.Count == 0)
+    {
+        <div class="results-card">
+            <p class="mb-0">
+                You do not have any race results available yet.
+                Please check again after your event.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+
+            @foreach (var result in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="results-card">
+
+                        <h4>
+                            Result #@result.ResultID
+                        </h4>
+
+                        <p class="results-detail">
+                            <strong>Registration ID:</strong>
+                            @result.EnrolmentID
+                        </p>
+
+                        <p class="results-detail">
+                            <strong>Finish Time:</strong>
+                            @result.FinishTime.ToString(@"hh\:mm\:ss")
+                        </p>
+
+                        <p class="results-detail">
+                            <strong>Finishing Position:</strong>
+                            @result.FinishingPosition
+                        </p>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Participant"
+           asp-action="Index"
+           class="results-back">
+            Back to My Dashboard
+        </a>
+    </div>
+
+</div>

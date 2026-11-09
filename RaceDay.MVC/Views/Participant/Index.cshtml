@@ -73,7 +73,9 @@
 
         <h1>
             Your Race.
-            <span class="participant-highlight">Your Journey.</span>
+            <span class="participant-highlight">
+                Your Journey.
+            </span>
         </h1>
 
         <p class="mt-3 mb-0">
@@ -131,9 +133,11 @@
                     your sporting achievements.
                 </p>
 
-                <span class="participant-button">
+                <a asp-controller="Participant"
+                   asp-action="Results"
+                   class="participant-button">
                     View Results
-                </span>
+                </a>
             </div>
         </div>
 
