@@ -1,74 +1,162 @@
 # RaceDay
+**Programming 2B – Portfolio of Evidence (POE)**
 
-RaceDay is a web-based event management system designed for South African road running, walking, and cycling events.
+## Project Overview
 
-The system is designed to support two main user roles:
+RaceDay is a web-based sporting event management system designed for South African running, walking and cycling events.
 
-- **Organiser** – can create and manage events and categories, view event enrolments, and capture participant results.
-- **Participant** – can create an account, browse events, enter an event by selecting a category, view their enrolments, and track their personal results.
+The application allows participants to browse and register for sporting events, while organisers can create and manage their own events.
 
-## Part 1 - System Planning and Database
+RaceDay was developed using ASP.NET Core MVC, ASP.NET Core Web API, C#, Entity Framework Core and SQL Server.
 
-Part 1 focuses on planning the RaceDay system before application development begins.
+## Project Structure
+
+The solution consists of three main projects:
+
+- **RaceDay.API** – Handles REST API endpoints, business logic and database operations.
+- **RaceDay.MVC** – Provides the web interface for participants and organisers.
+- **RaceDay.API.Tests** – Contains automated unit tests.
+
+## Part 1 – System Planning and Database
+
+Part 1 focused on planning the RaceDay system before development.
 
 The planning documents include:
 
 - Entity Relationship Diagram (ERD)
 - API Endpoint Plan
-- SQL Server database script
-- GitHub Actions validation workflow
+- SQL Server Database Script
+- GitHub Actions Validation Workflow
 
-These files are stored in the `/docs` folder.
+These documents are stored in the `/docs` folder.
 
-## CI/CD Validation
+### Part 1 CI/CD Validation
 
-The GitHub Actions workflow validates that the required Part 1 files are present in the repository.
+GitHub Actions was used to validate the required Part 1 files.
 
-![Successful GitHub Actions workflow](docs/Workflow.png)
+![Part 1 GitHub Actions Workflow](docs/Workflow.png)
 
-## Video Presentation
+### Part 1 Video Presentation
 
-YouTube video link: https://youtu.be/cWrbEoW9MFA
+https://youtu.be/cWrbEoW9MFA
 
-## Part 2 - REST API Development
+## Part 2 – REST API Development
 
-Part 2 focuses on developing the RaceDay REST API using ASP.NET Core, C#, Entity Framework Core, and SQL Server.
+Part 2 focused on developing the backend REST API using ASP.NET Core, C#, Entity Framework Core and SQL Server.
 
-### Main Features
+### API Controllers
 
-The API supports two user roles:
+The API includes controllers for:
 
-- **Organiser:** Can create events, update or delete their own events, manage event information, and perform permitted event management activities.
-- **Participant:** Can register, log in, view available events, enrol in events, and view their results.
+- Authentication
+- Users
+- Events
+- Event Types
+- Categories
+- Enrolments
+- Results
 
-The API includes endpoints for authentication, users, events, event types, categories, enrolments, and results.
+The API supports HTTP methods such as GET, POST, PUT and DELETE for retrieving and managing information.
 
 ### Authentication and Security
 
-The system uses password hashing to protect user passwords. Session-based authentication stores the logged-in user's ID and role.
+RaceDay uses password hashing to protect user passwords.
 
-Role-based restrictions prevent Participants from performing Organiser-only activities.
+Session-based authentication stores the logged-in user's ID and role.
 
-### Running the Project
+Role-based access restrictions help ensure that participants and organisers can only perform permitted operations.
 
-1. Open `RaceDay.API.slnx` in Visual Studio.
-2. Ensure SQL Server LocalDB is available and the RaceDayDB database has been created using the project database script.
-3. Check the database connection string in `appsettings.json`.
-4. Run the RaceDay.API project.
-5. Open Swagger to view and test the API endpoints.
+Organisers can update and delete only events that belong to them.
 
-### Unit Testing
+### Database Integration
 
-The project includes automated unit tests using xUnit.
+Entity Framework Core is used to communicate with the SQL Server database.
 
-To run the tests, open Test Explorer in Visual Studio and select **Run All Tests**.
+The database stores information about users, events, event types, categories, enrolments and results.
 
-### CI/CD
+## Part 3 – ASP.NET Core MVC Application
 
-GitHub Actions automatically builds the project and runs the unit tests to check that the API works correctly.
+The RaceDay MVC application provides a user-friendly interface that communicates with the REST API.
 
-![Successful Part 2 GitHub Actions workflow](docs/Part2Workflow.png)
+### Participant Features
 
-### Part 2 Video Presentation
+Participants can:
 
-YouTube video link: https://youtu.be/QcLGusuWkx8
+- Register an account and log in.
+- View available sporting events.
+- Select event categories.
+- Register for sporting events.
+- View their existing registrations.
+- Access the race results page.
+
+### Organiser Features
+
+Organisers can:
+
+- Register an account and log in.
+- Access the Organiser Dashboard.
+- Create new sporting events.
+- View events they have created.
+- Edit their own events.
+- Delete their own events.
+
+The Manage Events functionality was tested through the MVC application, including creating, updating and deleting a test event.
+
+The Organiser Registrations and Manage Results interfaces are not yet fully implemented.
+
+## Running the Project
+
+1. Open the RaceDay solution in Visual Studio.
+2. Ensure SQL Server LocalDB is installed.
+3. Create the RaceDay database using the provided SQL script if it does not already exist.
+4. Check the database connection string in `appsettings.json`.
+5. Run the `RaceDay.API` project.
+6. Run the `RaceDay.MVC` project to access the web interface.
+7. Log in as a Participant or Organiser to test the available features.
+
+The MVC application requires the API to be running.
+
+## API Documentation
+
+Swagger/OpenAPI is included to display the available API endpoints and support API testing.
+
+## Unit Testing
+
+The project includes automated unit tests developed using xUnit.
+
+To run the tests:
+
+1. Open the solution in Visual Studio.
+2. Select **Test → Test Explorer**.
+3. Click **Run All Tests**.
+4. Review the test results.
+
+## GitHub and CI/CD
+
+Git and GitHub were used for version control throughout development.
+
+GitHub Actions is configured to build the project and run automated tests.
+
+![Part 2 GitHub Actions Workflow](docs/Part2Workflow.png)
+
+## Video Demonstrations
+
+**Part 1 – System Planning and Database**
+
+https://youtu.be/cWrbEoW9MFA
+
+**Part 2 – REST API Development**
+
+https://youtu.be/QcLGusuWkx8
+
+**Final MVC Application Demonstration**
+
+Add the final YouTube video link here after uploading.
+
+## Conclusion
+
+RaceDay demonstrates how ASP.NET Core MVC, Web API, Entity Framework Core and SQL Server can be combined to develop a sporting event management system.
+
+The project includes user authentication, role-based access, event management, participant registration, API development, unit testing and GitHub integration.
+
+The application provides a foundation for further improvements, including completing organiser registration management and race result administration.
